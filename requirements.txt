@@ -1,0 +1,12 @@
+# The ranker itself (rank.py, src/) uses ONLY the Python standard library --
+# json, csv, gzip, re, datetime, dataclasses, argparse. This is intentional:
+# it satisfies the hackathon's compute constraints trivially (no heavy
+# embedding-model or vector-DB dependency to install/run within the 5-min,
+# 16GB, CPU-only, no-network budget) and means there is no version-drift
+# risk at Stage 3 reproduction.
+#
+# These are only needed for the optional EDA notebook and tests.
+pytest>=7.4
+jupyter>=1.0
+pandas>=2.0
+matplotlib>=3.7

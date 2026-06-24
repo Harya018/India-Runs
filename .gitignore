@@ -1,0 +1,20 @@
+# Raw uncompressed candidate pool -- too large for git, and not needed
+# since candidates.jsonl.gz is tracked and rank.py reads gzip transparently.
+data/candidates.jsonl
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# OS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Local scratch
+/tmp/
+*.log

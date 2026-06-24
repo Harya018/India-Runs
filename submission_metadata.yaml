@@ -1,0 +1,92 @@
+# Redrob Hackathon — Submission Metadata
+# Fields marked <<FILL IN>> must be completed before submission.
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "<<FILL IN — e.g. your-team-name>>"
+
+primary_contact:
+  name: "Harya"
+  email: "<<FILL IN your email>>"
+  phone: "<<FILL IN your phone, e.g. +91-XXXXXXXXXX>>"
+
+team_members:
+  - name: "Harya"
+    email: "<<FILL IN>>"
+    role: "ML Engineer"
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "<<FILL IN — e.g. https://github.com/Harya018/redrob-ranker>>"
+
+sandbox_link: "<<FILL IN — Streamlit Cloud link once sandbox/app.py is deployed>>"
+# sandbox/app.py is built and tested locally; deploy on share.streamlit.io
+# pointing at this repo + sandbox/app.py + requirements.txt, then paste the
+# resulting URL here.
+
+reproduce_command: "python rank.py --candidates ./data/candidates.jsonl.gz --out ./outputs/submission.csv --reference-date 2026-06-24"
+
+# ============================================================================
+# Compute environment
+# ============================================================================
+compute:
+  platform: "<<FILL IN — e.g. your laptop model>>"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11+"
+  os: "<<FILL IN — e.g. Windows 11 / macOS 14 / Ubuntu 22.04>>"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Used Claude for architecture discussion, EDA-driven design decisions
+  (skill taxonomy, trap-detection thresholds), code implementation, unit
+  test design, and documentation. All scoring logic, thresholds, and trap
+  rules were derived from explicit exploration of the released
+  candidates.jsonl dataset (see notebooks/eda.py) and explicit statements
+  in job_description.md -- not invented or assumed. No candidate data was
+  sent to any external LLM API at ranking time; rank.py runs entirely
+  offline using only the Python standard library.
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+methodology_summary: |
+  Hybrid rule-based ranker with three multiplicative layers: a base fit
+  score (skill substance, career relevance, experience fit, seniority
+  authenticity, location/logistics, education), a behavioral multiplier
+  (engagement/availability signals, bounded 0.55-1.10), and a trap penalty
+  multiplier (honeypots, consulting-only career, pure-research-only).
+
+  The key defeating mechanism against keyword-stuffing: skill trust scores
+  (endorsements x duration, not raw count) are only counted at full value
+  if career_history TEXT independently corroborates domain relevance --
+  this catches candidates who list plausible-looking AI skills with no
+  real work history behind them. The flip side, career_relevance_score, is
+  computed purely from free-text career history (never from title),
+  which is what lets "Tier 5" candidates (e.g. Recommendation Systems
+  Engineer, Search Engineer -- no AI buzzword in title) compete fairly
+  against explicitly AI-titled candidates.
+
+  Pure stdlib implementation: ~50-60s wall-clock and ~1.8GB peak RSS for
+  the full 100K pool, well inside the 5min/16GB/CPU-only/no-network budget.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
